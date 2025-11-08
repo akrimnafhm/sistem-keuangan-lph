@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('biaya', 15, 2); 
             $table->integer('jumlah_audit');
             $table->timestamps();
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4'; $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 

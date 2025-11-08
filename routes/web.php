@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PelakuUsahaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PasswordVerificationController; // Jangan lupa import ini
+use App\Http\Controllers\PasswordVerificationController;
+use App\Http\Controllers\KonfigurasiBiayaController;
+use App\Http\Controllers\PengaturanBiayaAuditController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
     // Pelaku Usaha routes
     Route::resource('pelaku-usaha', PelakuUsahaController::class);
+    Route::get('/get-cities', [PelakuUsahaController::class, 'getCities'])->name('get.cities');
 
     // Password verification AJAX route
     Route::post('/password/verify', [PasswordVerificationController::class, 'verify'])->name('password.verify');
@@ -50,7 +53,13 @@ Route::middleware('auth')->group(function () {
         Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-        Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password'); // Route reset password user
+        Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::get('alokasi-biaya', [KonfigurasiBiayaController::class, 'show'])->name('alokasi-biaya.show');
+        Route::get('alokasi-biaya/edit', [KonfigurasiBiayaController::class, 'edit'])->name('alokasi-biaya.edit');
+        Route::put('alokasi-biaya', [KonfigurasiBiayaController::class, 'update'])->name('alokasi-biaya.update');
+        Route::get('pengaturan-biaya-audit', [PengaturanBiayaAuditController::class, 'index'])->name('pengaturan-biaya-audit.index');
+        Route::get('pengaturan-biaya-audit/{wilayah}/edit', [PengaturanBiayaAuditController::class, 'edit'])->name('pengaturan-biaya-audit.edit');
+        Route::put('pengaturan-biaya-audit/{wilayah}', [PengaturanBiayaAuditController::class, 'update'])->name('pengaturan-biaya-audit.update');
 
         // Route Pengaturan Wilayah (masih di-comment)
         // Route::resource('pengaturan-wilayah', WilayahController::class)->except(['create', 'store', 'destroy']);

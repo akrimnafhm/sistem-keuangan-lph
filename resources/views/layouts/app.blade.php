@@ -36,7 +36,7 @@
             <!-- Main Content -->
             <div class="flex-1 ml-72">
                 <!-- Top Header -->
-                <header class="bg-white shadow-sm border-b border-gray-200">
+                <header class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-10">
                     <div class="max-w-7xl mx-auto px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
@@ -55,7 +55,6 @@
                                     </div>
                                     <div class="text-sm text-left">
                                         <div class="font-medium text-gray-900">{{ Auth::user()->name ?? 'Admin' }}</div>
-                                        <div class="text-gray-500">Admin LPH</div>
                                     </div>
                                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -70,15 +69,6 @@
                                         </svg>
                                         Edit Profile
                                     </a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                            </svg>
-                                            Logout
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-700 leading-tight">
             {{ __('Detail Pelaku Usaha') }}
         </h2>
     </x-slot>
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Daerah (Provinsi)</label>
-                                    <p class="mt-1 text-base text-gray-700 dark:text-gray-300">{{ $pelakuUsaha->wilayah->nama_provinsi }}</p>
+                                    <p class="mt-1 text-base text-gray-700 dark:text-gray-300">{{ $pelakuUsaha->city->name . ', ' . $pelakuUsaha->city->province->name}}</p>
                                 </div>
                             </div>
 

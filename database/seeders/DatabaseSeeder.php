@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         // Panggil WilayahSeeder yang sudah kita buat
         $this->call([
-            WilayahSeeder::class,
             UserSeeder::class,
+            KonfigurasiBiayaSeeder::class,
         ]);
     }
 }

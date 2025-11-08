@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- Notifikasi untuk menampilkan password baru --}}
-            @if (session('new_password_info'))
+            @if(session('new_password_info'))
                 <div class="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">Password Reset!</strong>
                     <span class="block sm:inline">Password untuk user <span class="font-semibold">{{ session('new_password_info')['username'] }}</span> telah direset menjadi: <strong class="text-lg">{{ session('new_password_info')['password'] }}</strong></span>
@@ -49,8 +49,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Password</label>
                             <div class="flex items-center mt-1">
-                                <p class="text-base text-gray-700 dark:text-gray-300 mr-2 tracking-widest">********</p> 
-                                {{-- Tombol Reset, bukan Lihat --}}
+                                <p id="password-display" class="text-base text-gray-700 dark:text-gray-300 mr-2 tracking-widest">********</p> 
                                 <button type="button" id="reset-password-btn" title="Reset Password User (Membutuhkan Validasi)" class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300">
                                     {{-- Ikon Kunci/Refresh --}}
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -63,13 +62,10 @@
 
                     {{-- Tombol Aksi di Bawah --}}
                     <div class="mt-8 border-t dark:border-gray-700 pt-6 flex items-center justify-start space-x-4">
-                        
-                        {{-- Tombol Edit (beri ID) --}}
                         <button type="button" id="edit-user-btn" data-url="{{ route('users.edit', $user->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                             Edit
                         </button>
 
-                        {{-- Tombol Hapus (beri ID pada form) --}}
                         <form id="delete-user-form" action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
@@ -81,7 +77,6 @@
                         </form>
                     </div>
 
-                    <!-- Modal Popup (Sama seperti sebelumnya) -->
                     <div id="password-confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden transition-opacity duration-300 ease-out" style="opacity: 0;">
                         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md transform transition-all duration-300 ease-out scale-95 opacity-0" id="modal-content">
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 mb-4">Konfirmasi Password Admin</h3>
@@ -108,8 +103,9 @@
         </div>
     </div>
 
-    {{-- Script untuk Modal (dengan revisi reset) --}}
+    {{-- Script untuk Modal --}}
     <script>
+        // ... (Semua variabel const di atasnya) ...
         const modal = document.getElementById('password-confirm-modal');
         const modalContent = document.getElementById('modal-content');
         const adminPasswordInput = document.getElementById('admin_password');
@@ -119,15 +115,13 @@
         
         const editBtn = document.getElementById('edit-user-btn');
         const deleteBtn = document.getElementById('delete-user-btn'); 
-        const resetPasswordBtn = document.getElementById('reset-password-btn'); // Ganti dari viewPasswordBtn
+        const resetPasswordBtn = document.getElementById('reset-password-btn'); 
         const deleteForm = document.getElementById('delete-user-form');
-        // passwordDisplay tidak kita ubah lagi
-
-        let currentAction = null; // 'edit', 'delete', 'reset_password'
+        
+        let currentAction = null; 
         let actionUrl = '';     
 
         function showModal(action, url = '') {
-            console.log('Showing modal for action:', action, 'with URL:', url); 
             currentAction = action;
             actionUrl = url;
             adminPasswordInput.value = ''; 
@@ -142,7 +136,6 @@
         }
 
         function hideModal() {
-             console.log('Hiding modal.'); 
             modal.style.opacity = '0';
             modalContent.style.opacity = '0';
             modalContent.style.transform = 'scale(0.95)';
@@ -155,33 +148,41 @@
 
         cancelBtn.addEventListener('click', hideModal);
 
+        // ==========================================================
+        // === TAMBAHAN KODE UNTUK MEMBACA TOMBOL ENTER ADA DI SINI ===
+        // ==========================================================
+        adminPasswordInput.addEventListener('keyup', function(event) {
+            // Cek jika tombol yang ditekan adalah 'Enter' (keyCode 13)
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                event.preventDefault(); // Mencegah aksi default (seperti submit form jika ada)
+                submitBtn.click(); // Memicu klik pada tombol "Konfirmasi"
+            }
+        });
+        // ==========================================================
+
+
         if (editBtn) {
             editBtn.addEventListener('click', (e) => { 
-                console.log('Edit button clicked.'); 
                 e.preventDefault(); 
                 showModal('edit', editBtn.dataset.url);
             });
         }
         if (deleteBtn) {
              deleteBtn.addEventListener('click', (e) => { 
-                console.log('Delete button clicked.'); 
                 e.preventDefault(); 
                 showModal('delete'); 
              });
         }
-        // Ganti event listener untuk tombol reset
         if (resetPasswordBtn) { 
             resetPasswordBtn.addEventListener('click', () => {
-                console.log('Reset password button clicked.'); 
-                showModal('reset_password'); // Ganti action
+                showModal('reset_password'); 
             });
         }
 
         submitBtn.addEventListener('click', async () => {
-            console.log('Submit confirm button clicked.'); 
+            // ... (Fungsi 'submitBtn.addEventListener' tetap sama persis seperti sebelumnya) ...
             const password = adminPasswordInput.value;
             if (!password) {
-                console.log('Password is empty.'); 
                 modalError.textContent = 'Password tidak boleh kosong.';
                 modalError.classList.remove('hidden');
                 return;
@@ -190,7 +191,6 @@
             modalError.classList.add('hidden'); 
             submitBtn.disabled = true; 
             submitBtn.textContent = 'Memverifikasi...';
-            console.log('Sending verification request...'); 
 
             try {
                 const response = await fetch('{{ route("password.verify") }}', { 
@@ -201,32 +201,21 @@
                     },
                     body: JSON.stringify({ password: password })
                 });
-                console.log('Verification response status:', response.status); 
 
                 const result = await response.json();
-                console.log('Verification result:', result); 
 
                 if (result.verified) {
-                    console.log('Password verified successfully!'); 
                     hideModal(); 
-                    console.log('Performing action:', currentAction); 
                     if (currentAction === 'edit') {
-                        console.log('Redirecting to edit page:', actionUrl); 
                         window.location.href = actionUrl; 
                     } else if (currentAction === 'delete') {
-                        console.log('Showing delete confirmation.'); 
                         if (confirm('Apakah Anda yakin ingin menghapus user ini?')) {
-                            console.log('Submitting delete form.'); 
                             deleteForm.submit(); 
-                        } else {
-                            console.log('Delete cancelled.'); 
                         }
-                    } else if (currentAction === 'reset_password') { // Ganti action check
-                        console.log('Calling resetUserPassword function.'); 
-                        resetUserPassword(); // Panggil fungsi reset
+                    } else if (currentAction === 'reset_password') { 
+                        resetUserPassword(); 
                     }
                 } else {
-                    console.log('Password verification failed.'); 
                     modalError.textContent = 'Password yang Anda masukkan salah.';
                     modalError.classList.remove('hidden');
                 }
@@ -238,57 +227,44 @@
             } finally {
                  submitBtn.disabled = false; 
                  submitBtn.textContent = 'Konfirmasi';
-                 console.log('Verification process finished.'); 
             }
         });
 
-        // Fungsi BARU untuk mereset password user via AJAX
         async function resetUserPassword() {
-            console.log('resetUserPassword function called.'); 
-            // Mungkin tampilkan pesan "mereset..." di suatu tempat?
-            
+            // ... (Fungsi 'resetUserPassword' tetap sama persis seperti sebelumnya) ...
             try {
-                 console.log('Sending reset password request...'); 
-                 // Gunakan route baru dan method POST
                  const response = await fetch('{{ route("users.reset-password", $user->id) }}', { 
-                    method: 'POST', // Kirim sebagai POST karena mengubah data
+                    method: 'POST', 
                     headers: {
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Kirim CSRF token
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' 
                     }
                 });
-                console.log('Reset password response status:', response.status); 
 
                 if (!response.ok) { 
                     throw new Error('Gagal mereset password.');
                 }
 
                 const result = await response.json();
-                console.log('Reset password result:', result); 
 
                 if (result.new_password) {
-                    console.log('Password reset successfully. New password:', result.new_password); 
-                    // Tampilkan notifikasi di halaman berikutnya (redirect)
-                    // Kita akan menggunakan session flash message
                     window.location.href = '{{ route("users.show", $user->id) }}' + '?new_password=' + result.new_password + '&username=' + '{{ $user->username }}'; // Reload halaman dengan parameter
                 } else {
-                    console.log('Failed to get new password from response.'); 
-                     alert('Gagal mendapatkan password baru dari server.'); // Tampilkan alert error
+                     alert('Gagal mendapatkan password baru dari server.'); 
                 }
 
             } catch (error) {
                  console.error('Error resetting password:', error); 
-                 alert('Terjadi kesalahan saat mereset password.'); // Tampilkan alert error
+                 alert('Terjadi kesalahan saat mereset password.'); 
             }
         }
 
-        // Ambil parameter dari URL untuk menampilkan notifikasi password baru
+        // ... (Kode untuk menampilkan notifikasi password baru tetap sama) ...
         const urlParams = new URLSearchParams(window.location.search);
         const newPassword = urlParams.get('new_password');
         const usernameForPassword = urlParams.get('username');
 
         if (newPassword && usernameForPassword) {
-            // Bangun elemen notifikasi (mirip dengan notifikasi success/error di atas)
             const notificationDiv = document.createElement('div');
             notificationDiv.className = 'mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative';
             notificationDiv.setAttribute('role', 'alert');
@@ -309,15 +285,12 @@
             notificationDiv.appendChild(spanTag);
             notificationDiv.appendChild(pTag);
 
-            // Masukkan notifikasi ke dalam halaman (misalnya sebelum konten utama)
-            const mainContentContainer = document.querySelector('.max-w-7xl.mx-auto'); // Sesuaikan selector jika perlu
+            const mainContentContainer = document.querySelector('.max-w-7xl.mx-auto'); 
             if (mainContentContainer) {
                  mainContentContainer.parentNode.insertBefore(notificationDiv, mainContentContainer);
             }
 
-             // Hapus parameter dari URL agar notifikasi tidak muncul lagi saat refresh
              window.history.replaceState({}, document.title, window.location.pathname);
         }
-
     </script>
 </x-app-layout>

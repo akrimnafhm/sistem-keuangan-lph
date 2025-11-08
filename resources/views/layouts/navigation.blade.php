@@ -16,15 +16,20 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('pelaku-usaha.index')" :active="request()->routeIs('pelaku-usaha.*')">
+                    <!-- === PERUBAHAN DI SINI === -->
+                    <x-nav-link :href="route('pelaku-usaha.index')" :active="request()->routeIs('pelaku-usaha.index')">
                         {{ __('Data Pelaku Usaha') }}
                     </x-nav-link>
 
                     @can('admin')
-                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                        <!-- === PERUBAHAN DI SINI === -->
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                             {{ __('Kelola User') }}
                         </x-nav-link>
-                        {{-- Nanti link Pengaturan Wilayah juga ditaruh di sini --}}
+
+                        <x-nav-link :href="route('alokasi-biaya.edit')" :active="request()->routeIs('alokasi-biaya.edit')">
+                            {{ __('Alokasi Biaya') }}
+                        </x-nav-link>
                     @endcan
 
                 </div>
@@ -83,13 +88,19 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-             <x-responsive-nav-link :href="route('pelaku-usaha.index')" :active="request()->routeIs('pelaku-usaha.*')">
+             <!-- === PERUBAHAN DI SINI === -->
+             <x-responsive-nav-link :href="route('pelaku-usaha.index')" :active="request()->routeIs('pelaku-usaha.index')">
                 {{ __('Data Pelaku Usaha') }}
             </x-responsive-nav-link>
 
             @can('admin')
-                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                <!-- === PERUBAHAN DI SINI === -->
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                     {{ __('Kelola User') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('alokasi-biaya.edit')" :active="request()->routeIs('alokasi-biaya.edit')">
+                    {{ __('Alokasi Biaya') }}
                 </x-responsive-nav-link>
             @endcan
             
@@ -99,6 +110,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                {{-- <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div> --}}
             </div>
 
             <div class="mt-3 space-y-1">

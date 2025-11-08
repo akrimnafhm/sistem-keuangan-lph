@@ -1,6 +1,6 @@
     <x-app-layout>
         <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl dark:text-gray-700 leading-tight">
                 {{ __('Kelola User') }}
             </h2>
         </x-slot>
@@ -29,9 +29,9 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Username (NIP/NIM)</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Level</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Username (NIP/NIM)</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Level</th>
                                         <th scope="col" class="relative px-6 py-3">
                                             <span class="sr-only">Action</span>
                                         </th>
