@@ -12,11 +12,6 @@ use App\Http\Controllers\PengaturanBiayaAuditController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 // Redirect root URL to login page
@@ -27,7 +22,7 @@ Route::get('/', function () {
 // Dashboard route (requires authentication)
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard'); // 'verified' middleware removed if email verification is not needed
+})->middleware(['auth'])->name('dashboard');
 
 // Routes accessible only after login
 Route::middleware('auth')->group(function () {
@@ -36,33 +31,40 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Pelaku Usaha routes
-    Route::resource('pelaku-usaha', PelakuUsahaController::class);
-    Route::get('/get-cities', [PelakuUsahaController::class, 'getCities'])->name('get.cities');
-
     // Password verification AJAX route
     Route::post('/password/verify', [PasswordVerificationController::class, 'verify'])->name('password.verify');
 
-    // Admin-specific routes
+    // --- Rute Pelaku Usaha (Untuk semua user yang login) ---
+    // Pindahkan 'get-cities' ke sini karena 'create' dan 'edit' membutuhkannya
+    Route::get('/get-cities', [PelakuUsahaController::class, 'getCities'])->name('get.cities');
+
+
+    // --- Admin-specific routes ---
     Route::middleware('can:admin')->group(function () {
+        
         // User management routes
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-        Route::post('users', [UserController::class, 'store'])->name('users.store');
-        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
-        Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::resource('users', UserController::class); // Menggunakan resource lebih bersih
         Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+        
+        // Konfigurasi Biaya routes
         Route::get('alokasi-biaya', [KonfigurasiBiayaController::class, 'show'])->name('alokasi-biaya.show');
         Route::get('alokasi-biaya/edit', [KonfigurasiBiayaController::class, 'edit'])->name('alokasi-biaya.edit');
         Route::put('alokasi-biaya', [KonfigurasiBiayaController::class, 'update'])->name('alokasi-biaya.update');
+        
+        // Pengaturan Biaya Audit routes
         Route::get('pengaturan-biaya-audit', [PengaturanBiayaAuditController::class, 'index'])->name('pengaturan-biaya-audit.index');
-        Route::get('pengaturan-biaya-audit/{wilayah}/edit', [PengaturanBiayaAuditController::class, 'edit'])->name('pengaturan-biaya-audit.edit');
-        Route::put('pengaturan-biaya-audit/{wilayah}', [PengaturanBiayaAuditController::class, 'update'])->name('pengaturan-biaya-audit.update');
+        Route::get('pengaturan-biaya-audit/{province}/edit', [PengaturanBiayaAuditController::class, 'edit'])->name('pengaturan-biaya-audit.edit');
+        Route::put('pengaturan-biaya-audit/{province}', [PengaturanBiayaAuditController::class, 'update'])->name('pengaturan-biaya-audit.update');
 
-        // Route Pengaturan Wilayah (masih di-comment)
-        // Route::resource('pengaturan-wilayah', WilayahController::class)->except(['create', 'store', 'destroy']);
+        // --- PERBAIKAN: ---
+        // Pindahkan Route::resource ke dalam grup admin
+        // Ini akan secara otomatis melindungi SEMUA 7 rute (index, create, store, show, edit, update, destroy)
+        Route::resource('pelaku-usaha', PelakuUsahaController::class);
+        
+        // HAPUS RUTE MANUAL YANG DUPLIKAT DI BAWAH INI
+        // Route::post('/pelaku-usaha', [PelakuUsahaController::class, 'store'])->name('pelaku-usaha.store');
+        // Route::get('/pelaku-usaha/{pelakuUsaha}', [PelakuUsahaController::class, 'show'])->name('pelaku-usaha.show');
+        // Route::get('/pelaku-usaha/{pelakuUsaha}/edit', [PelakuUsahaController::class, 'edit'])->name('pelaku-usaha.edit');
     });
 });
 

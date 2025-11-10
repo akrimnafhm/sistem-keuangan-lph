@@ -24,7 +24,6 @@ class PelakuUsahaController extends Controller
 
     /**
      * Menampilkan daftar Pelaku Usaha.
-     * Kita ganti relasi 'wilayah' menjadi 'city.province'
      */
     public function index()
     {
@@ -57,7 +56,7 @@ class PelakuUsahaController extends Controller
             'no_sttd' => 'required|string|unique:pelaku_usahas',
             'nama_usaha' => 'required|string|max:255',
             'alamat_lengkap' => 'required|string',
-            'city_id' => 'required|exists:cities,code',
+            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix').'cities', 'code')], // Validasi yang lebih aman
             'skala_usaha' => 'required|string',
             'jenis_produk' => 'required|string',
             'jumlah_produk' => 'required|integer',
@@ -93,11 +92,9 @@ class PelakuUsahaController extends Controller
         $provinces = Province::pluck('name', 'id');
 
         // 3. Ambil 'province_code' dari relasi yang sudah dimuat
-        //    ($pelakuUsaha->city->province_code)
         $provinceCode = $pelakuUsaha->city->province_code;
         
         // 4. Ambil SEMUA kota yang termasuk dalam provinsi tersebut
-        //    Kita butuh 'code' (untuk value) dan 'name' (untuk display)
         $cities = City::where('province_code', $provinceCode)
                       ->select('code', 'name')
                       ->get();
@@ -120,7 +117,7 @@ class PelakuUsahaController extends Controller
             'no_sttd' => ['required', 'string', Rule::unique('pelaku_usahas')->ignore($pelakuUsaha->id)],
             'nama_usaha' => ['required', 'string', 'max:255'],
             'alamat_lengkap' => 'required|string',
-            'city_id' => 'required|exists:cities,code',
+            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix').'cities', 'code')], // Validasi yang lebih aman
             'skala_usaha' => 'required|string',
             'jenis_produk' => 'required|string',
             'jumlah_produk' => 'required|integer',
@@ -130,8 +127,9 @@ class PelakuUsahaController extends Controller
 
         $pelakuUsaha->update($request->all());
 
-        // Arahkan kembali ke halaman show
-        return redirect()->route('pelaku-usaha.show', $pelakuUsaha->id) 
+        // --- PERBAIKAN DI SINI ---
+        // Arahkan kembali ke halaman INDEX (daftar) karena 'show' tidak ada
+        return redirect()->route('pelaku-usaha.index') 
                          ->with('success', 'Data Pelaku Usaha berhasil diperbarui.');
     }
 
@@ -151,30 +149,34 @@ class PelakuUsahaController extends Controller
      */
     public function getCities(Request $request)
     {
-        // 1. Validasi input (ini sudah benar)
-        $request->validate(['province_id' => 'required|exists:provinces,id']);
+        // 1. Validasi input MENGGUNAKAN Rule::exists
+        $request->validate([
+            'province_id' => [
+                'required',
+                Rule::exists((new Province())->getTable(), 'id') 
+            ]
+        ]);
 
         // 2. Ambil ID provinsi dari request
         $provinceId = $request->province_id;
 
-        // 3. Cari provinsi berdasarkan ID untuk mendapatkan 'code'-nya
-        //    (Kita butuh model Province untuk ini)
+        // 3. Cari provinsi berdasarkan ID
         $province = Province::find($provinceId);
 
+        // 4. Periksa jika provinsinya ada
         if (!$province) {
-            return response()->json([], 404); // Seharusnya tidak terjadi, tapi aman
+            return response()->json(['message' => 'Province not found'], 404);
         }
 
-        // 4. Ambil 'code' provinsi (misal: "34" untuk Yogyakarta)
+        // 5. Ambil 'code' provinsi
         $provinceCode = $province->code;
 
-        // 5. Cari kota berdasarkan 'province_code' (sesuai skema database Anda)
-        //    DAN pilih 'code' dan 'name' (BUKAN 'id')
+        // 6. Cari kota berdasarkan 'province_code'
         $cities = City::where('province_code', $provinceCode)
-                      ->select('code', 'name') // <-- PENTING: Pilih 'code'
+                      ->select('code', 'name')
                       ->get();
         
-        // 6. Kembalikan sebagai JSON
+        // 7. Kembalikan sebagai JSON
         return response()->json($cities);
     }
 }

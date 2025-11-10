@@ -134,11 +134,11 @@
                         
                         cities.forEach(function (city) {
                             const option = document.createElement('option');
-                            option.value = city.id;
+                            option.value = city.code;
                             option.textContent = city.name;
                             
                             // Cek apakah city.id ini adalah yang dipilih sebelumnya (saat validasi gagal)
-                            if (oldCityId == city.id) {
+                            if (oldCityId == city.code) {
                                 option.selected = true;
                             }
                             

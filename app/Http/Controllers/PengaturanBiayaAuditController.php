@@ -2,37 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wilayah;
+use Laravolt\Indonesia\Models\Province; // <-- GANTI DARI WILAYAH KE PROVINCE
 use Illuminate\Http\Request;
 
 class PengaturanBiayaAuditController extends Controller
 {
     /**
-     * Menampilkan halaman "View" (daftar) semua pengaturan biaya wilayah.
+     * Menampilkan daftar semua pengaturan biaya provinsi.
      */
     public function index()
     {
-        // Ambil semua data wilayah, urutkan berdasarkan nama provinsi
-        $wilayahs = Wilayah::orderBy('nama_provinsi', 'asc')->get();
+        // Ganti 'Wilayah' menjadi 'Province' dan 'nama_provinsi' menjadi 'name'
+        $provinces = Province::orderBy('name', 'asc')->get();
         
-        return view('pengaturan-biaya-audit.index', compact('wilayahs'));
+        // Ganti 'wilayahs' menjadi 'provinces'
+        return view('pengaturan-biaya-audit.index', compact('provinces'));
     }
 
     /**
-     * Menampilkan form "Edit" untuk satu wilayah spesifik.
+     * Menampilkan form "Edit" untuk satu provinsi spesifik.
      */
-    public function edit(Wilayah $wilayah)
+    // Ganti 'Wilayah $wilayah' menjadi 'Province $province' (Route Model Binding)
+    public function edit(Province $province)
     {
-        // $wilayah sudah otomatis diambil dari database berdasarkan ID di URL
-        return view('pengaturan-biaya-audit.edit', compact('wilayah'));
+        // Ganti 'wilayah' menjadi 'province'. 
+        // Ini akan memperbaiki error 'Undefined variable $konfigurasiBiaya'
+        // jika Anda mengganti variabel di view Anda menjadi '$province'
+        return view('pengaturan-biaya-audit.edit', compact('province'));
     }
 
     /**
-     * Menyimpan perubahan untuk satu wilayah.
+     * Menyimpan perubahan untuk satu provinsi.
      */
-    public function update(Request $request, Wilayah $wilayah)
+    // Ganti 'Wilayah $wilayah' menjadi 'Province $province'
+    public function update(Request $request, Province $province)
     {
-        // Validasi data yang masuk
+        // Validasi data yang masuk (nama kolom sudah sesuai dengan migrasi baru)
         $validatedData = $request->validate([
             'transport_dalam_kota' => 'required|numeric|min:0',
             'uhpd_dalam_kota' => 'required|numeric|min:0',
@@ -42,11 +47,11 @@ class PengaturanBiayaAuditController extends Controller
             'uhpd_luar_kota' => 'required|numeric|min:0',
         ]);
 
-        // Update data wilayah di database
-        $wilayah->update($validatedData);
+        // Update data 'province' di database
+        $province->update($validatedData);
 
-        // Redirect kembali ke halaman "View" (index) dengan pesan sukses
+        // Ganti '$wilayah->nama_provinsi' menjadi '$province->name'
         return redirect()->route('pengaturan-biaya-audit.index')
-                         ->with('success', 'Biaya untuk ' . $wilayah->nama_provinsi . ' berhasil diperbarui.');
+                         ->with('success', 'Biaya untuk ' . $province->name . ' berhasil diperbarui.');
     }
 }

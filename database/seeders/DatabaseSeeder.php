@@ -12,10 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Panggil WilayahSeeder yang sudah kita buat
         $this->call([
             UserSeeder::class,
             KonfigurasiBiayaSeeder::class,
+
+            // NAMA YANG BENAR ADALAH DATABASE SEEDER
+            \Laravolt\Indonesia\Seeds\DatabaseSeeder::class, // <-- INI YANG BENAR
+
+            ProvinceBiayaSeeder::class, 
         ]);
     }
 }

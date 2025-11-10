@@ -27,7 +27,7 @@
                                 Nama Usaha
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
-                                Daerah (Provinsi)
+                                Daerah
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
                                 Skala Usaha

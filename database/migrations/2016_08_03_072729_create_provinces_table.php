@@ -13,21 +13,13 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laravolt.indonesia.table_prefix').'provinces', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->char('code', 2)->unique();
-            $table->string('name', 255);
-            $table->bigInteger('transport_dalam_kota')->default(0);
-            $table->bigInteger('uhpd_dalam_kota')->default(0);
-            $table->bigInteger('hotel_luar_kota')->default(0);
-            $table->bigInteger('transport_luar_kota')->default(0);
-            $table->bigInteger('tiket_pesawat_luar_kota')->default(0);
-            $table->bigInteger('uhpd_luar_kota')->default(0);
-            $table->text('meta')->nullable();
-            $table->timestamps();
-            $table->engine = 'InnoDB';
-            $table->charset = 'utf8mb4'; $table->collation = 'utf8mb4_unicode_ci';
-        });
+        Schema::create(config('laravolt.indonesia.table_prefix') . 'provinces', function (Blueprint $table) {
+        $table->bigIncrements('id');
+        $table->char('code', 2)->unique();
+        $table->string('name', 255);
+        $table->text('meta')->nullable();
+        $table->timestamps();
+    });
     }
 
     /**

@@ -14,10 +14,12 @@ return new class extends Migration
     {
         DB::statement('ALTER TABLE pelaku_usahas ENGINE = InnoDB');
         Schema::table('pelaku_usahas', function (Blueprint $table) {
-        $table->dropColumn('daerah');
-        $table->char('city_id', 4)->nullable()->after('alamat_lengkap')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
-        $table->foreign('city_id')->references('code')->on(config('laravolt.indonesia.table_prefix').'cities');
-    });
+            $table->dropColumn('daerah');
+            $table->char('city_id', 4)->nullable()->after('alamat_lengkap')->charset('utf8mb4')->collation('utf8mb4_unicode_ci');
+            
+            // Baris ini sudah 100% BENAR
+            $table->foreign('city_id')->references('code')->on(config('laravolt.indonesia.table_prefix').'cities');
+        });
     }
 
     /**
@@ -26,9 +28,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pelaku_usahas', function (Blueprint $table) {
-        $table->dropForeign(['city_id']);
-        $table->dropColumn('city_id');
-        $table->string('daerah');
-    });
+            // Kita perlu mengambil nama tabel yang benar di sini juga
+            $tableName = config('laravolt.indonesia.table_prefix') . 'cities';
+            
+            // Perbaikan kecil untuk method down() agar lebih aman
+            $table->dropForeign(['city_id']);
+            $table->dropColumn('city_id');
+            $table->string('daerah');
+        });
     }
 };
