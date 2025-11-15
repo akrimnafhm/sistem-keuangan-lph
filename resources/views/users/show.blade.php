@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-700 leading-tight">
             {{ __('Detail User') }}
         </h2>
     </x-slot>
@@ -24,59 +24,46 @@
 
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-8 text-gray-900 dark:text-gray-100 relative"> 
-                    
-                    <div class="space-y-6">
-                        {{-- Nama --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Nama</label>
-                            <p class="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{{ $user->name }}</p>
+                <div class="p-6 border rounded-lg dark:border-gray-300 bg-[#E8E8E8] text-gray-900 dark:text-gray-100 relative"> 
+
+                    {{-- (Action buttons moved below, outside rounded container) --}}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {{-- Kiri: username & level --}}
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Username (NIP/NIM)</label>
+                                <input type="text" readonly value="{{ $user->username }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Level</label>
+                                <input type="text" readonly value="{{ ucfirst($user->level) }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                            </div>
                         </div>
 
-                        {{-- Username --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Username (NIP/NIM)</label>
-                            <p class="mt-1 text-lg text-gray-700 dark:text-gray-300">{{ $user->username }}</p>
-                        </div>
+                        {{-- Kanan: nama & password (reset) --}}
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Nama</label>
+                                <input type="text" readonly value="{{ $user->name }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                            </div>
 
-                        {{-- Level --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Level</label>
-                            <p class="mt-1 text-base text-gray-700 dark:text-gray-300">{{ ucfirst($user->level) }}</p>
-                        </div>
-
-                        {{-- Password (Tombol Reset) --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Password</label>
-                            <div class="flex items-center mt-1">
-                                <p id="password-display" class="text-base text-gray-700 dark:text-gray-300 mr-2 tracking-widest">********</p> 
-                                <button type="button" id="reset-password-btn" title="Reset Password User (Membutuhkan Validasi)" class="text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300">
-                                    {{-- Ikon Kunci/Refresh --}}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
-                                    </svg>
-                                </button>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500">Password</label>
+                                <div class="flex items-center mt-1">
+                                    <input id="password-display" type="text" readonly value="********" class="block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700 mr-3">
+                                    <button type="button" id="reset-password-btn" title="Reset Password User (Membutuhkan Validasi)" class="inline-flex items-center px-3 py-2 bg-yellow-400 text-yellow-900 rounded-md hover:bg-yellow-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Tombol Aksi di Bawah --}}
-                    <div class="mt-8 border-t dark:border-gray-700 pt-6 flex items-center justify-start space-x-4">
-                        <button type="button" id="edit-user-btn" data-url="{{ route('users.edit', $user->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                            Edit
-                        </button>
-
-                        <form id="delete-user-form" action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            @if(auth()->user()->id !== $user->id)
-                                <button type="button" id="delete-user-btn" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                    Hapus
-                                </button>
-                            @endif
-                        </form>
-                    </div>
-
+                    {{-- Modal konfirmasi tetap di sini (tidak diubah) --}}
                     <div id="password-confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden transition-opacity duration-300 ease-out" style="opacity: 0;">
                         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md transform transition-all duration-300 ease-out scale-95 opacity-0" id="modal-content">
                             <h3 class="text-lg font-medium leading-6 text-gray-900 dark:text-gray-100 mb-4">Konfirmasi Password Admin</h3>
@@ -97,8 +84,25 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
+            </div>
+
+            {{-- Tombol aksi: di luar rounded container, kanan bawah --}}
+            <div class="mt-4 flex justify-end space-x-3">
+                <button type="button" id="edit-user-btn" data-url="{{ route('users.edit', $user->id) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                    Edit
+                </button>
+
+                <form id="delete-user-form" action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    @if(auth()->user()->id !== $user->id)
+                        <button type="button" id="delete-user-btn" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                            Hapus
+                        </button>
+                    @endif
+                </form>
             </div>
         </div>
     </div>

@@ -17,103 +17,115 @@
                 </div>
             @endif
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
                     
                     {{-- Tabel Data --}}
-                    <div class="overflow-x-auto border rounded-lg dark:border-gray-700">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr class="divide-x dark:divide-gray-600">
-                                    {{-- Kolom 1: Provinsi --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 shadow-md sm:rounded-lg overflow-hidden border-collapse">
+                            <thead class="bg-[#36454F]/90">
+                                <tr class="">
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider align-middle border border-[#D9D9D9]/50"
+                                        rowspan="2">
                                         Provinsi
                                     </th>
-                                    
-                                    {{-- Kolom 2: UHPD (Dalam Kota) --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        UHPD (Dalam Kota)
+
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider border border-[#D9D9D9]/50"
+                                        colspan="2">
+                                        UHPD
                                     </th>
-                                    
-                                    {{-- Kolom 3: UHPD (Luar Kota) --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        UHPD (Luar Kota)
+
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider border border-[#D9D9D9]/50"
+                                        colspan="2">
+                                        Transport
                                     </th>
-                                    
-                                    {{-- Kolom 4: Transport (Dalam Kota) --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Transport (Dalam Kota)
+
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider align-middle border border-[#D9D9D9]/50"
+                                        rowspan="2">
+                                        Hotel
                                     </th>
-                                    
-                                    {{-- Kolom 5: Transport (Luar Kota) --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Transport (Luar Kota)
-                                    </th>
-                                    
-                                    {{-- Kolom 6: Hotel (Luar Kota) --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Hotel (Luar Kota)
-                                    </th>
-                                    
-                                    {{-- Kolom 7: Tiket Pesawat --}}
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider align-middle border border-[#D9D9D9]/50"
+                                        rowspan="2">
                                         Tiket Pesawat
                                     </th>
-                                    
-                                    {{-- Kolom 8: Aksi --}}
-                                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Aksi
+
+                                    <th scope="col"
+                                        class="px-4 py-3 text-center text-xm font-medium text-white tracking-wider align-middle border border-[#D9D9D9]/50"
+                                        rowspan="2">
+                                        Action
+                                    </th>
+                                </tr>
+
+                                {{-- Baris Header Kedua (Sub-kolom) --}}
+                                <tr class="">
+
+                                    {{-- Sub-kolom UHPD --}}
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-white tracking-wider border border-[#D9D9D9]/50">
+                                        Dalam Kota
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-white tracking-wider border border-[#D9D9D9]/50">
+                                        Luar Kota
+                                    </th>
+
+                                    {{-- Sub-kolom Transport --}}
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-white tracking-wider border border-[#D9D9D9]/50">
+                                        Dalam Kota
+                                    </th>
+                                    <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-white tracking-wider border border-[#D9D9D9]/50">
+                                        Luar Kota
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody class="bg-white dark:bg-white">
                                 
                                 {{-- PERBAIKAN: Mengganti $wilayahs as $wilayah menjadi $provinces as $province --}}
                                 @foreach ($provinces as $province)
-                                    <tr class="divide-x dark:divide-gray-700">
+                                    <tr class="odd:bg-[#D9D9D9]/50 even:bg-[#D9D9D9]">
                                         
                                         {{-- Kolom 1: Provinsi --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm font-semibold text-gray-500 dark:text-gray-700">
                                             {{-- PERBAIKAN: Mengganti $wilayah->nama_provinsi menjadi $province->name --}}
-                                            {{ $province->name }}
+                                            {{ str($province->name)
+                                                            ->title()
+                                                            ->replace(['Dki', 'D.i.'], ['DKI', 'D.I.']) }}
                                         </td>
                                         
                                         {{-- Kolom 2: UHPD (Dalam Kota) --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->uhpd_dalam_kota, 0, ',', '.') }}
                                         </td>
                                         
                                         {{-- Kolom 3: UHPD (Luar Kota) --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->uhpd_luar_kota, 0, ',', '.') }}
                                         </td>
                                         
                                         {{-- Kolom 4: Transport (Dalam Kota) --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->transport_dalam_kota, 0, ',', '.') }}
                                         </td>
                                         
                                         {{-- Kolom 5: Transport (Luar Kota) --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->transport_luar_kota, 0, ',', '.') }}
                                         </td>
                                         
                                         {{-- Kolom 6: Hotel (Luar Kota) --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->hotel_luar_kota, 0, ',', '.') }}
                                         </td>
                                         
                                         {{-- Kolom 7: Tiket Pesawat --}}
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">
                                             Rp {{ number_format($province->tiket_pesawat_luar_kota, 0, ',', '.') }}
                                         </td>
                                         
-                                        {{-- Kolom 8: Aksi --}}
                                         <td class="px-4 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                            {{-- Tombol Edit: buka modal konfirmasi password sebelum redirect ke halaman edit --}}
-                                            <button type="button" data-url="{{ route('pengaturan-biaya-audit.edit', $province->id) }}" class="edit-btn inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                                Edit
-                                            </button>
+                                            <a href="{{ route('pengaturan-biaya-audit.edit', $province->id) }}" class="text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-700 px-4 py-1 border border-gray-700 rounded-md">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -123,7 +135,7 @@
                     </div>
 
                     {{-- Teks deskripsi DIPINDAHKAN ke bawah tabel --}}
-                    <p class="text-gray-600 dark:text-gray-400 mt-4 text-sm">
+                    <p class="text-gray-600 dark:text-gray-700 mt-4 text-sm">
                         *Daftar biaya audit (batas tertinggi) per provinsi sesuai regulasi (Kepkaban 22/2024 & SBM).
                     </p>
                 </div>

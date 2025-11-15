@@ -20,19 +20,19 @@
                     
                     <thead class="bg-[#36454F]/90">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white tracking-wider">
                                 No. STTD
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white tracking-wider">
                                 Nama Usaha
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white tracking-wider">
                                 Daerah
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white uppercase tracking-wider">
+                            <th scope="col" class="px-6 py-3 text-left text-xm font-medium text-white tracking-wider">
                                 Skala Usaha
                             </th>
-                            <th scope="col" class="relative px-6 py-3 text-center text-xm font-medium text-white uppercase tracking-wider">
+                            <th scope="col" class="relative px-6 py-3 text-center text-xm font-medium text-white tracking-wider">
                                 Action
                             </th>
                         </tr>

@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\City;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PelakuUsahaController extends Controller
 {
@@ -28,6 +29,7 @@ class PelakuUsahaController extends Controller
     public function index()
     {
         // Menggunakan relasi baru: city, dan dari city ke province
+        Log::debug('PelakuUsahaController@index called', ['user' => auth()->user() ? auth()->user()->only(['id','username','level']) : null]);
         $pelaku_usahas = PelakuUsaha::with('city.province')->oldest()->get();
         return view('pelaku-usaha.index', compact('pelaku_usahas'));
     }
@@ -38,6 +40,7 @@ class PelakuUsahaController extends Controller
     public function create()
     {
         // Mengambil data dari tabel 'provinces' (BUKAN 'wilayahs')
+        Log::debug('PelakuUsahaController@create called', ['user' => auth()->user() ? auth()->user()->only(['id','username','level']) : null]);
         $provinces = Province::pluck('name', 'id'); 
 
         return view('pelaku-usaha.create', [
