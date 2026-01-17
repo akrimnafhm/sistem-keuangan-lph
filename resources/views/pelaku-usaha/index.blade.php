@@ -5,8 +5,6 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             @if (session('success'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -45,7 +43,7 @@
                                 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">{{ $pu->no_sttd }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-700">{{ $pu->nama_usaha }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">{{ $pu->city?->name ?? 'N/A' }}, {{ $pu->city?->province?->name ?? 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">{{ $pu->city?->name ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-700">{{ $pu->skala_usaha }}</td>
                                 
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">

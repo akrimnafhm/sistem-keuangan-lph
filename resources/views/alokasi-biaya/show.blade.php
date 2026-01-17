@@ -5,8 +5,6 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -20,7 +18,7 @@
                         <h3 class="text-lg font-medium text-gray-500 dark:text-gray-700 mb-2">Pajak</h3>
                         <div>
                             <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Pajak (%)</label>
-                            <p class="mt-1 block w-full md:w-1/3 px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                            <p class="mt-1 block w-full md:w-1/3 px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                 {{ number_format($konfigurasi->pajak, 0) }}%
                             </p>
                         </div>
@@ -32,19 +30,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_uin_mikro, 0, ',', '.') }}
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_uin_menengah, 0, ',', '.') }}
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_uin_besar, 0, ',', '.') }}
                                 </p>
                             </div>
@@ -57,19 +55,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                              <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_lph_mikro, 0, ',', '.') }}
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_lph_menengah, 0, ',', '.') }}
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     Rp {{ number_format($konfigurasi->fee_lph_besar, 0, ',', '.') }}
                                 </p>
                             </div>
@@ -82,19 +80,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     {{ number_format($konfigurasi->unit_cost_audit_mikro, 0) }}%
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 cursor-not-allowed">
                                     {{ number_format($konfigurasi->unit_cost_audit_menengah, 0) }}%
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
+                                <p class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-[#F8F8F8] text-gray-500 dark:text-gray-700 ">
                                     {{ number_format($konfigurasi->unit_cost_audit_besar, 0) }}%
                                 </p>
                             </div>

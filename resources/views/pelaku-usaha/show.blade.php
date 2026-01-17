@@ -5,8 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
                     <div class="border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     
@@ -16,19 +15,19 @@
                             <div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">No. STTD</label>
-                                    <input readonly type="text" value="{{ $pelakuUsaha->no_sttd }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                    <input readonly type="text" value="{{ $pelakuUsaha->no_sttd }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Nama Usaha</label>
-                                    <input readonly type="text" value="{{ $pelakuUsaha->nama_usaha }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                    <input readonly type="text" value="{{ $pelakuUsaha->nama_usaha }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Alamat Lengkap</label>
-                                    <textarea readonly rows="3" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2">{{ $pelakuUsaha->alamat_lengkap }}</textarea>
+                                    <textarea readonly rows="3" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed">{{ $pelakuUsaha->alamat_lengkap }}</textarea>
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Daerah (Provinsi)</label>
-                                    <input readonly type="text" value="{{ $pelakuUsaha->city->name . ', ' . $pelakuUsaha->city->province->name }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                    <input readonly type="text" value="{{ $pelakuUsaha->city->name . ', ' . $pelakuUsaha->city->province->name }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                 </div>
                             </div>
 
@@ -36,24 +35,24 @@
                             <div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Skala Usaha</label>
-                                    <input readonly type="text" value="{{ $pelakuUsaha->skala_usaha }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                    <input readonly type="text" value="{{ $pelakuUsaha->skala_usaha }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Jenis Produk</label>
-                                    <textarea readonly rows="3" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2">{{ $pelakuUsaha->jenis_produk }}</textarea>
+                                    <textarea readonly rows="3" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed">{{ $pelakuUsaha->jenis_produk }}</textarea>
                                 </div>
                                 <div class="mb-4">
                                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Biaya</label>
-                                        <input readonly type="text" value="Rp {{ number_format($pelakuUsaha->biaya, 2, ',', '.') }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                        <input readonly type="text" value="Rp {{ number_format($pelakuUsaha->biaya, 2, ',', '.') }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                 </div>
                                 <div class="mb-4 grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Jumlah Produk</label>
-                                        <input readonly type="text" value="{{ $pelakuUsaha->jumlah_produk }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                        <input readonly type="text" value="{{ $pelakuUsaha->jumlah_produk }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-500 dark:text-gray-600">Jumlah Audit</label>
-                                        <input readonly type="text" value="{{ $pelakuUsaha->jumlah_audit }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2" />
+                                        <input readonly type="text" value="{{ $pelakuUsaha->jumlah_audit }}" class="mt-1 block w-full border border-gray-300 dark:border-gray-400 bg-[#E8E8E8] dark:bg-[#E8E8E8] text-gray-800 dark:text-gray-600 rounded-md shadow-sm px-3 py-2 cursor-not-allowed" />
                                     </div>
                                 </div>
                             </div>

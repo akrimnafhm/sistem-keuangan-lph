@@ -5,8 +5,6 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- Notifikasi untuk menampilkan password baru --}}
             @if(session('new_password_info'))
                 <div class="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative" role="alert">
@@ -33,12 +31,12 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-500">Username (NIP/NIM)</label>
-                                <input type="text" readonly value="{{ $user->username }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                                <input type="text" readonly value="{{ $user->username }}" class="mt-1 block w-full dark:border-gray-300 bg-[#E8E8E8] px-3 py-2 border rounded-md shadow-sm text-gray-700 cursor-not-allowed">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-500">Level</label>
-                                <input type="text" readonly value="{{ ucfirst($user->level) }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                                <input type="text" readonly value="{{ ucfirst($user->level) }}" class="mt-1 block w-full dark:border-gray-300 bg-[#E8E8E8] px-3 py-2 border rounded-md shadow-sm text-gray-700 cursor-not-allowed">
                             </div>
                         </div>
 
@@ -46,13 +44,13 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-500">Nama</label>
-                                <input type="text" readonly value="{{ $user->name }}" class="mt-1 block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700">
+                                <input type="text" readonly value="{{ $user->name }}" class="mt-1 block w-full dark:border-gray-300 bg-[#E8E8E8] px-3 py-2 border rounded-md shadow-sm text-gray-700 cursor-not-allowed">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-500">Password</label>
                                 <div class="flex items-center mt-1">
-                                    <input id="password-display" type="text" readonly value="********" class="block w-full bg-[#F8F8F8] px-3 py-2 border rounded-md shadow-sm text-gray-700 mr-3">
+                                    <input id="password-display" type="text" readonly value="********" class="block w-full dark:border-gray-300 bg-[#E8E8E8] px-3 py-2 border rounded-md shadow-sm text-gray-700 mr-3 cursor-not-allowed">
                                     <button type="button" id="reset-password-btn" title="Reset Password User (Membutuhkan Validasi)" class="inline-flex items-center px-3 py-2 bg-yellow-400 text-yellow-900 rounded-md hover:bg-yellow-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />

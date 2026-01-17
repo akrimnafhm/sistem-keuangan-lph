@@ -52,8 +52,8 @@ Route::middleware('auth')->group(function () {
 
         // Pengaturan Biaya Audit routes (admin-only)
         Route::get('pengaturan-biaya-audit', [PengaturanBiayaAuditController::class, 'index'])->name('pengaturan-biaya-audit.index');
-        Route::get('pengaturan-biaya-audit/{province}/edit', [PengaturanBiayaAuditController::class, 'edit'])->name('pengaturan-biaya-audit.edit');
-        Route::put('pengaturan-biaya-audit/{province}', [PengaturanBiayaAuditController::class, 'update'])->name('pengaturan-biaya-audit.update');
+        Route::get('pengaturan-biaya-audit/{province}/edit', [PengaturanBiayaAuditController::class, 'edit'])->middleware('password.confirm')->name('pengaturan-biaya-audit.edit');
+        Route::put('pengaturan-biaya-audit/{province}', [PengaturanBiayaAuditController::class, 'update'])->middleware('password.confirm')->name('pengaturan-biaya-audit.update');
 
         // Note: pelaku-usaha resource intentionally NOT here so normal authenticated users can access
     });

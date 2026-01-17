@@ -21,11 +21,14 @@ class PasswordVerificationController extends Controller
 
         // Cek apakah password yang dimasukkan cocok dengan hash di database
         if (Hash::check($request->password, $user->password)) {
-            // Password cocok, kirim response JSON sukses
+            // Password cocok: tandai waktu konfirmasi pada session agar middleware 'password.confirm' menerima
+            $request->session()->put('auth.password_confirmed_at', time());
+
+            // Kirim response JSON sukses
             return response()->json(['verified' => true]);
-        } else {
-            // Password salah, kirim response JSON gagal
-            return response()->json(['verified' => false]);
         }
+
+        // Password salah, kirim response JSON gagal
+        return response()->json(['verified' => false]);
     }
 }

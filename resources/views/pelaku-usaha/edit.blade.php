@@ -5,8 +5,6 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-6 border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
                 <div class="text-gray-900 dark:text-gray-100">
                     
