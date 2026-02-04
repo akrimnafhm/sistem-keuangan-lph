@@ -29,6 +29,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Jika user memilih "Ingat saya", set cookie dengan lifetime yang lebih panjang
+        if ($request->boolean('remember')) {
+            Auth::guard('web')->login(Auth::user(), true);
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

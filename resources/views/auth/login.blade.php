@@ -47,18 +47,70 @@
                     </div>
 
                     <div class="block mb-6">
-                        <label for="remember_me" class="inline-flex items-center">
-                            <input id="remember_me" type="checkbox" class="rounded bg-white border-gray-400 text-gray-600 shadow-sm focus:ring-gray-500" name="remember">
+                        <label for="remember_me" class="inline-flex items-center cursor-pointer">
+                            <input id="remember_me" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-blue-600 bg-white shadow-sm focus:ring-2 focus:ring-blue-500" name="remember" value="1">
                             <span class="ms-2 text-sm text-gray-600">{{ __('Ingat saya') }}</span>
                         </label>
                     </div>
 
                     <div class="mt-6">
-                        <x-primary-button class="w-full justify-center py-3 focus:ring-[#5F5F5F] text-white text-base">
+                        <x-primary-button class="w-full justify-center py-3 text-white text-base">
                             {{ __('Log in') }}
                         </x-primary-button>
                     </div>
                 </form>
+
+                <script>
+                    // Simpan nilai form ke localStorage saat user mengisi
+                    const usernameInput = document.getElementById('username');
+                    const passwordInput = document.getElementById('password');
+                    const rememberCheckbox = document.getElementById('remember_me');
+
+                    // Load nilai dari localStorage saat halaman dibuka
+                    window.addEventListener('DOMContentLoaded', function() {
+                        const savedUsername = localStorage.getItem('remembered_username');
+                        const savedPassword = localStorage.getItem('remembered_password');
+                        const wasRemembered = localStorage.getItem('was_remembered') === 'true';
+
+                        if (savedUsername) {
+                            usernameInput.value = savedUsername;
+                        }
+                        if (savedPassword) {
+                            passwordInput.value = savedPassword;
+                        }
+                        if (wasRemembered) {
+                            rememberCheckbox.checked = true;
+                        }
+                    });
+
+                    // Simpan nilai saat form akan disubmit
+                    document.querySelector('form').addEventListener('submit', function(e) {
+                        if (rememberCheckbox.checked) {
+                            localStorage.setItem('remembered_username', usernameInput.value);
+                            localStorage.setItem('remembered_password', passwordInput.value);
+                            localStorage.setItem('was_remembered', 'true');
+                        } else {
+                            // Hapus data jika tidak dicheck
+                            localStorage.removeItem('remembered_username');
+                            localStorage.removeItem('remembered_password');
+                            localStorage.setItem('was_remembered', 'false');
+                        }
+                    });
+
+                    // Update checkbox styling saat di-click
+                    rememberCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            this.classList.add('bg-blue-600', 'border-blue-600');
+                            this.classList.remove('bg-white', 'border-gray-300');
+                        } else {
+                            this.classList.remove('bg-blue-600', 'border-blue-600');
+                            this.classList.add('bg-white', 'border-gray-300');
+                        }
+                    });
+
+                    // Trigger change event untuk styling awal
+                    rememberCheckbox.dispatchEvent(new Event('change'));
+                </script>
 
                 <p class="mt-8 text-xs text-gray-500">
                     &copy; {{ date('Y') }} Lembaga Penjamin Halal
