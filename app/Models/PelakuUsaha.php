@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravolt\Indonesia\Models\City;
+use App\Models\Auditor;
 
 /**
  * @property int $id
@@ -39,6 +41,7 @@ class PelakuUsaha extends Model
         'jumlah_produk',
         'biaya',
         'jumlah_audit',
+        'mandays',
     ];
 
     public function wilayah(): BelongsTo
@@ -53,6 +56,20 @@ class PelakuUsaha extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id', 'code');
+    }
+
+    public function auditors()
+    {
+        return $this->belongsToMany(Auditor::class, 'auditor_pelaku_usaha')
+            ->withPivot('sort_order')
+            ->withTimestamps()
+            ->orderByPivot('sort_order');
+    }
+
+    public function rekapitulasi()
+    {
+        // One to One (Satu Proyek punya Satu Rekap)
+        return $this->hasOne(RekapitulasiBiaya::class);
     }
 }
 

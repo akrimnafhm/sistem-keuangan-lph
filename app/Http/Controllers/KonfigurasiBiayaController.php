@@ -7,47 +7,48 @@ use Illuminate\Http\Request;
 
 class KonfigurasiBiayaController extends Controller
 {
-    /**
-     * Tampilkan halaman view (read-only) untuk alokasi biaya.
-     */
+    // Menampilkan halaman tabel konfigurasi (View Only)
     public function show()
     {
-        $konfigurasi = KonfigurasiBiaya::firstOrFail();
-        return view('alokasi-biaya.show', compact('konfigurasi'));
+        $biaya = KonfigurasiBiaya::all();
+        return view('alokasi-biaya.show', compact('biaya'));
     }
 
-    /**
-     * Menampilkan halaman form untuk mengedit alokasi biaya.
-     */
+    // Menampilkan form edit (Tabel Input)
     public function edit()
     {
-        $konfigurasi = KonfigurasiBiaya::firstOrFail();
-        return view('alokasi-biaya.edit', compact('konfigurasi'));
+        // Ambil semua data untuk ditampilkan di form edit
+        $biaya = KonfigurasiBiaya::all();
+        return view('alokasi-biaya.edit', compact('biaya'));
     }
+    // -----------------------------
 
-    /**
-     * Memperbarui data alokasi biaya di database.
-     */
+    // Menyimpan perubahan (Batch Update)
     public function update(Request $request)
     {
-        $validatedData = $request->validate([
-            'pajak' => 'required|numeric|min:0|max:100',
-            'fee_uin_mikro' => 'required|numeric|min:0',
-            'fee_uin_menengah' => 'required|numeric|min:0',
-            'fee_uin_besar' => 'required|numeric|min:0',
-            'fee_lph_mikro' => 'required|numeric|min:0',
-            'fee_lph_menengah' => 'required|numeric|min:0',
-            'fee_lph_besar' => 'required|numeric|min:0',
-            'unit_cost_audit_mikro' => 'required|numeric|min:0|max:100',
-            'unit_cost_audit_menengah' => 'required|numeric|min:0|max:100',
-            'unit_cost_audit_besar' => 'required|numeric|min:0|max:100',
+        $request->validate([
+            'biaya' => 'required|array', 
+            'biaya.*.id' => 'required|exists:konfigurasi_biayas,id',
+            'biaya.*.mikro' => 'required|numeric|min:0',
+            'biaya.*.kecil' => 'required|numeric|min:0',
+            'biaya.*.menengah' => 'required|numeric|min:0',
+            'biaya.*.besar' => 'required|numeric|min:0',
         ]);
 
-        $konfigurasi = KonfigurasiBiaya::firstOrFail();
-        $konfigurasi->update($validatedData);
+        foreach ($request->biaya as $id => $data) {
+            $item = KonfigurasiBiaya::find($id);
+            if ($item) {
+                $item->update([
+                    'mikro' => $data['mikro'],
+                    'kecil' => $data['kecil'],
+                    'menengah' => $data['menengah'],
+                    'besar' => $data['besar'],
+                ]);
+            }
+        }
 
-        // Ubah redirect ke halaman 'show' (view)
+        // Redirect kembali ke halaman SHOW setelah simpan
         return redirect()->route('alokasi-biaya.show')
-                         ->with('success', 'Pengaturan alokasi biaya berhasil diperbarui.');
+                         ->with('success', 'Aturan Fee & Pajak berhasil diperbarui.');
     }
 }

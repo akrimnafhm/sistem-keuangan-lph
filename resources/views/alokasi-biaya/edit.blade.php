@@ -1,112 +1,106 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-700 leading-tight">
-            {{ __('Pengaturan Alokasi Biaya') }}
+            {{ __('Edit Aturan Fee & Pajak') }}
         </h2>
     </x-slot>
 
-
-            <!-- Notifikasi Sukses -->
-            @if (session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Sukses!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
-
-            <div>
-                <div class="text-gray-900 dark:text-gray-100">
-                    
-                    <form action="{{ route('alokasi-biaya.update') }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        {{-- Bagian Pajak --}}
-                        <div class="mb-6 p-4 border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
-                            <h3 class="text-lg font-medium text-gray-500 dark:text-gray-700 mb-2">Pajak</h3>
-                            <div>
-                                <label for="pajak" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Pajak (%)</label>
-                                <input type="number" name="pajak" id="pajak" value="{{ old('pajak', $konfigurasi->pajak) }}" class="mt-1 block w-full md:w-1/3 px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                <x-input-error :messages="$errors->get('pajak')" class="mt-2" />
-                            </div>
-                        </div>
-
-                        {{-- Bagian Fee UIN --}}
-                        <div class="mb-6 p-4 border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
-                            <h3 class="text-lg font-medium text-gray-500 dark:text-gray-700 mb-4">Fee UIN (Rp)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label for="fee_uin_mikro" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                    <input type="number" name="fee_uin_mikro" id="fee_uin_mikro" value="{{ old('fee_uin_mikro', $konfigurasi->fee_uin_mikro) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_uin_mikro')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="fee_uin_menengah" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                    <input type="number" name="fee_uin_menengah" id="fee_uin_menengah" value="{{ old('fee_uin_menengah', $konfigurasi->fee_uin_menengah) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_uin_menengah')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="fee_uin_besar" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                    <input type="number" name="fee_uin_besar" id="fee_uin_besar" value="{{ old('fee_uin_besar', $konfigurasi->fee_uin_besar) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_uin_besar')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Bagian Fee LPH --}}
-                        <div class="mb-6 p-4 border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
-                            <h3 class="text-lg font-medium text-gray-500 dark:text-gray-700 mb-4">Fee LPH (Rp)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label for="fee_lph_mikro" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                    <input type="number" name="fee_lph_mikro" id="fee_lph_mikro" value="{{ old('fee_lph_mikro', $konfigurasi->fee_lph_mikro) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_lph_mikro')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="fee_lph_menengah" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                    <input type="number" name="fee_lph_menengah" id="fee_lph_menengah" value="{{ old('fee_lph_menengah', $konfigurasi->fee_lph_menengah) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_lph_menengah')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="fee_lph_besar" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                    <input type="number" name="fee_lph_besar" id="fee_lph_besar" value="{{ old('fee_lph_besar', $konfigurasi->fee_lph_besar) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('fee_lph_besar')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Bagian Unit Cost Audit --}}
-                        <div class="mb-6 p-4 border rounded-lg dark:border-gray-300 bg-[#E8E8E8]">
-                            <h3 class="text-lg font-medium text-gray-500 dark:text-gray-700 mb-4">Unit Cost Audit (%)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label for="unit_cost_audit_mikro" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Mikro & Kecil</label>
-                                    <input type="number" name="unit_cost_audit_mikro" id="unit_cost_audit_mikro" value="{{ old('unit_cost_audit_mikro', $konfigurasi->unit_cost_audit_mikro) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('unit_cost_audit_mikro')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="unit_cost_audit_menengah" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Menengah</label>
-                                    <input type="number" name="unit_cost_audit_menengah" id="unit_cost_audit_menengah" value="{{ old('unit_cost_audit_menengah', $konfigurasi->unit_cost_audit_menengah) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('unit_cost_audit_menengah')" class="mt-2" />
-                                </div>
-                                <div>
-                                    <label for="unit_cost_audit_besar" class="block text-sm font-medium text-gray-500 dark:text-gray-700">Besar</label>
-                                    <input type="number" name="unit_cost_audit_besar" id="unit_cost_audit_besar" value="{{ old('unit_cost_audit_besar', $konfigurasi->unit_cost_audit_besar) }}" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:border-gray-300 bg-[#F8F8F8] text-gray-500 dark:text-gray-700">
-                                    <x-input-error :messages="$errors->get('unit_cost_audit_besar')" class="mt-2" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Tombol Simpan --}}
-                        <div class="flex items-center justify-end mt-6">
-                            <x-primary-button>
-                                {{ __('Simpan Perubahan') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
+    {{-- Pesan Sukses (Jika ada redirect back) --}}
+    @if(session('success'))
+        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+            <span class="block sm:inline">{{ session('success') }}</span>
         </div>
+    @endif
+
+    {{-- Pesan Error Validasi --}}
+    @if($errors->any())
+        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <strong class="font-bold">Terjadi kesalahan!</strong>
+            <ul class="list-disc list-inside text-sm">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- Container Form (Tanpa padding berlebih di luar tabel) --}}
+    <div class="bg-white dark:bg-gray-100 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
+        <form action="{{ route('alokasi-biaya.update') }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-200 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-gray-800">Komponen</th>
+                            <th class="px-6 py-4 font-bold text-gray-800 text-center">Mikro</th>
+                            <th class="px-6 py-4 font-bold text-gray-800 text-center">Kecil</th>
+                            <th class="px-6 py-4 font-bold text-gray-800 text-center">Menengah</th>
+                            <th class="px-6 py-4 font-bold text-gray-800 text-center">Besar</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach($biaya as $item)
+                            <tr class="bg-white hover:bg-gray-50 transition">
+                                {{-- Nama Komponen (Read Only) --}}
+                                <td class="px-6 py-4 font-medium text-gray-900">
+                                    {{ $item->komponen }}
+                                    @if(in_array($item->komponen, ['Unit Cost', 'Pajak']))
+                                        <span class="text-xs font-normal text-blue-600 ml-1">(%)</span>
+                                    @else
+                                        <span class="text-xs font-normal text-green-600 ml-1">(Rp)</span>
+                                    @endif
+
+                                    {{-- Hidden ID untuk update --}}
+                                    <input type="hidden" name="biaya[{{ $item->id }}][id]" value="{{ $item->id }}">
+                                </td>
+
+                                {{-- Input Mikro --}}
+                                <td class="px-4 py-3">
+                                    <input type="number" step="0.01" name="biaya[{{ $item->id }}][mikro]"
+                                        value="{{ old("biaya.{$item->id}.mikro", $item->mikro) }}"
+                                        class="w-full text-sm text-right border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+                                </td>
+
+                                {{-- Input Kecil --}}
+                                <td class="px-4 py-3">
+                                    <input type="number" step="0.01" name="biaya[{{ $item->id }}][kecil]"
+                                        value="{{ old("biaya.{$item->id}.kecil", $item->kecil) }}"
+                                        class="w-full text-sm text-right border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+                                </td>
+
+                                {{-- Input Menengah --}}
+                                <td class="px-4 py-3">
+                                    <input type="number" step="0.01" name="biaya[{{ $item->id }}][menengah]"
+                                        value="{{ old("biaya.{$item->id}.menengah", $item->menengah) }}"
+                                        class="w-full text-sm text-right border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+                                </td>
+
+                                {{-- Input Besar --}}
+                                <td class="px-4 py-3">
+                                    <input type="number" step="0.01" name="biaya[{{ $item->id }}][besar]"
+                                        value="{{ old("biaya.{$item->id}.besar", $item->besar) }}"
+                                        class="w-full text-sm text-right border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Tombol Aksi --}}
+            <div class="flex items-center justify-end px-6 py-4 bg-gray-50 border-t border-gray-200 gap-3">
+                <a href="{{ route('alokasi-biaya.show') }}" 
+                    class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">
+                    {{ __('Batal') }}
+                </a>
+                <button type="submit" 
+                    class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 focus:bg-green-700 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    {{ __('Simpan') }}
+                </button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PelakuUsaha;
+use App\Models\Auditor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Laravolt\Indonesia\Models\Province;
@@ -12,39 +13,101 @@ use Illuminate\Support\Facades\Log;
 
 class PelakuUsahaController extends Controller
 {
+    // Konstanta batas minimal dan maksimal auditor per pelaku usaha
+    private const MIN_AUDITORS = 2;
+    private const MAX_AUDITORS = 4;
+
     // Opsi dropdown (tetap sama)
-    private $skalaUsahaOptions = ['Mikro dan Kecil', 'Menengah', 'Besar'];
+    private $skalaUsahaOptions = ['Mikro', 'Kecil', 'Menengah', 'Besar'];
     private $jenisProdukOptions = [
-        'Susu dan analognya', 'Lemak, minyak, dan emulsi minyak', 'Es untuk dimakan (edible ice)',
-        'Buah dan sayur dengan pengolahan', 'Kembang gula/permen dan cokelat', 'Serealia dan produk serealia',
-        'Produk bakeri', 'Daging dan produk olahan daging', 'Ikan dan produk perikanan', 'Telur olahan',
-        'Gula dan pemanis', 'Garam, rempah, sup, saus, salad', 'Pangan olahan untuk keperluan gizi khusus',
-        'Makanan ringan siap santap', 'Pangan siap saji', 'Minuman dengan pengolahan', 'Obat tradisional',
-        'Suplemen kesehatan', 'Kosmetika', 'Jasa Penyembelihan',
+        'Susu dan analognya',
+        'Lemak, minyak, dan emulsi minyak',
+        'Es untuk dimakan (edible ice) termasuk sherbet dan sorbet',
+        'Buah dan sayur dengan pengolahan dan penambahan bahan tambahan pangan',
+        'Kembang gula/permen dan cokelat',
+        'Serealia dan produk serealia yang merupakan produk turunan dari biji serealia, akar dan umbi, kacang-kacangan dan empulur dengan pengolahan dan penambahan bahan tambahan pangan',
+        'Produk bakeri',
+        'Daging dan produk olahan daging',
+        'Daging dan produk olahan daging (Gelatin)',
+        'Ikan dan produk perikanan, termasuk moluska, krustase, dan ekinodermata dengan pengolahan dan penambahan bahan tambahan pangan',
+        'Telur olahan dan produk-produk telur hasil olahan',
+        'Gula dan pemanis termasuk madu',
+        'Garam, rempah, sup, saus, salad, serta produk protein',
+        'Pangan olahan untuk keperluan gizi khusus',
+        'Makanan ringan siap santap',
+        'Pangan siap saji',
+        'Penyediaan makanan dan minuman dengan pengolahan',
+        'Bahan tambahan pangan',
+        'Kelompok bahan lainnya',
+        'Minuman dengan pengolahan',
+        'Kelompok bahan minuman',
+        'Obat tradisional',
+        'Suplemen kesehatan',
+        'Obat kuasi',
+        'Obat bebas',
+        'Obat bebas terbatas',
+        'Obat keras dikecualikan narkotika dan psikotropika',
+        'Bahan obat',
+        'Kosmetika',
+        'Kelompok bahan penolong',
+        'Bahan kimiawi lainnya',
+        'Bahan kimiawi lainnya (Flavor dan Fragrance)',
+        'Produk biologi',
+        'Produk biologi (Vaksin)',
+        'Produk rekayasa genetik',
+        'Sandang',
+        'Penutup kepala',
+        'Aksesoris',
+        'Perbekalan kesehatan rumah tangga',
+        'Peralatan rumah tangga',
+        'Peralatan peribadatan bagi umat Islam',
+        'Kemasan produk',
+        'Alat tulis dan perlengkapan kantor',
+        'Alat kesehatan',
+        'Bahan penyusun barang gunaan',
+        'Jasa Penyembelihan',
+        'Jasa Pengolahan',
+        'Jasa penyimpanan',
+        'Jasa pengemasan',
+        'Jasa pendistribusian',
+        'Jasa penjualan tanpa proses pengolahan/memasak',
+        'Jasa penyajian tanpa proses pengolahan/memasak',
     ];
 
     /**
      * Menampilkan daftar Pelaku Usaha.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Menggunakan relasi baru: city, dan dari city ke province
-        Log::debug('PelakuUsahaController@index called', ['user' => auth()->user() ? auth()->user()->only(['id','username','level']) : null]);
-        $pelaku_usahas = PelakuUsaha::with('city.province')->oldest()->get();
+        $search = $request->input('search');
+
+        // Mengambil data dengan pencarian
+        $pelaku_usahas = PelakuUsaha::with('city') // Eager load city
+            ->when($search, function ($query, $search) {
+                $query->where('nama_usaha', 'like', "%{$search}%")
+                    ->orWhere('no_sttd', 'like', "%{$search}%");
+            })
+            ->latest() // Urutkan terbaru
+            ->paginate(10); // Batasi 10 per halaman
+
+        $pelaku_usahas->appends(['search' => $search]);
+
         return view('pelaku-usaha.index', compact('pelaku_usahas'));
     }
-
     /**
      * Menampilkan form 'create' dengan data provinsi.
      */
     public function create()
     {
-        // Mengambil data dari tabel 'provinces' (BUKAN 'wilayahs')
-        Log::debug('PelakuUsahaController@create called', ['user' => auth()->user() ? auth()->user()->only(['id','username','level']) : null]);
-        $provinces = Province::pluck('name', 'id'); 
+        Log::debug('PelakuUsahaController@create called', ['user' => auth()->user() ? auth()->user()->only(['id', 'username', 'level']) : null]);
+        $provinces = Province::pluck('name', 'id');
+        $auditors = Auditor::where('status', 'Aktif')->pluck('nama', 'id');
+        $maxAuditors = min($auditors->count(), self::MAX_AUDITORS);
 
         return view('pelaku-usaha.create', [
-            'provinces' => $provinces, // Mengirim variabel $provinces
+            'provinces' => $provinces,
+            'auditors' => $auditors,
+            'maxAuditors' => $maxAuditors,
             'skalaUsahaOptions' => $this->skalaUsahaOptions,
             'jenisProdukOptions' => $this->jenisProdukOptions,
         ]);
@@ -55,23 +118,33 @@ class PelakuUsahaController extends Controller
      */
     public function store(Request $request)
     {
+        $maxAuditors = min(Auditor::where('status', 'Aktif')->count(), self::MAX_AUDITORS);
         $request->validate([
             'no_sttd' => 'required|string|unique:pelaku_usahas',
             'nama_usaha' => 'required|string|max:255',
             'alamat_lengkap' => 'required|string',
-            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix').'cities', 'code')], // Validasi yang lebih aman
+            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix') . 'cities', 'code')], // Validasi yang lebih aman
             'skala_usaha' => 'required|string',
             'jenis_produk' => 'required|string',
             'jumlah_produk' => 'required|integer',
             'biaya' => 'required|numeric',
-            'jumlah_audit' => 'required|integer',
+            'jumlah_audit' => 'required|integer|min:' . self::MIN_AUDITORS . '|max:' . $maxAuditors,
+            'mandays' => 'required|integer|min:1',
+            'auditor_ids' => 'required|array|size:' . $request->jumlah_audit,
+            'auditor_ids.*' => 'exists:auditors,id',
         ]);
 
-        // 'city_id' akan otomatis terisi karena ada di $fillable Model
-        PelakuUsaha::create($request->all());
+        $pelakuUsaha = PelakuUsaha::create($request->except('auditor_ids'));
+
+        $syncData = [];
+        foreach (array_values($request->auditor_ids) as $index => $auditorId) {
+            $syncData[$auditorId] = ['sort_order' => $index];
+        }
+
+        $pelakuUsaha->auditors()->attach($syncData);
 
         return redirect()->route('pelaku-usaha.index')
-                         ->with('success', 'Data Pelaku Usaha berhasil ditambahkan.');
+            ->with('success', 'Data Pelaku Usaha berhasil ditambahkan.');
     }
 
     /**
@@ -88,24 +161,20 @@ class PelakuUsahaController extends Controller
      */
     public function edit(PelakuUsaha $pelakuUsaha)
     {
-        // 1. Muat relasi yang diperlukan (city dan province dari city)
-        $pelakuUsaha->load('city.province');
-
-        // 2. Ambil semua provinsi (untuk dropdown provinsi)
+        $pelakuUsaha->load(['city.province', 'auditors']);
         $provinces = Province::pluck('name', 'id');
-
-        // 3. Ambil 'province_code' dari relasi yang sudah dimuat
-        $provinceCode = $pelakuUsaha->city->province_code;
-        
-        // 4. Ambil SEMUA kota yang termasuk dalam provinsi tersebut
+        $auditors = Auditor::where('status', 'Aktif')->pluck('nama', 'id');
+        $maxAuditors = min($auditors->count(), self::MAX_AUDITORS);
+        $provinceCode = $pelakuUsaha->city->province_code ?? null;
         $cities = City::where('province_code', $provinceCode)
-                      ->select('code', 'name')
-                      ->get();
+            ->pluck('name', 'code');
 
         return view('pelaku-usaha.edit', [
             'pelakuUsaha' => $pelakuUsaha,
             'provinces' => $provinces,
-            'cities' => $cities, // Kirim daftar kota yang sudah difilter
+            'cities' => $cities,
+            'auditors' => $auditors,
+            'maxAuditors' => $maxAuditors,
             'skalaUsahaOptions' => $this->skalaUsahaOptions,
             'jenisProdukOptions' => $this->jenisProdukOptions,
         ]);
@@ -116,24 +185,50 @@ class PelakuUsahaController extends Controller
      */
     public function update(Request $request, PelakuUsaha $pelakuUsaha)
     {
+        // 1. Ambil Max Auditor untuk Validasi (maksimal 4 per pelaku usaha)
+        $maxAuditors = min(Auditor::where('status', 'Aktif')->count(), self::MAX_AUDITORS);
+
+        // 2. Validasi Input
         $request->validate([
             'no_sttd' => ['required', 'string', Rule::unique('pelaku_usahas')->ignore($pelakuUsaha->id)],
             'nama_usaha' => ['required', 'string', 'max:255'],
             'alamat_lengkap' => 'required|string',
-            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix').'cities', 'code')], // Validasi yang lebih aman
+            'city_id' => ['required', Rule::exists(config('laravolt.indonesia.table_prefix') . 'cities', 'code')],
             'skala_usaha' => 'required|string',
             'jenis_produk' => 'required|string',
             'jumlah_produk' => 'required|integer',
             'biaya' => 'required|numeric',
-            'jumlah_audit' => 'required|integer',
+            'jumlah_audit' => 'required|integer|min:' . self::MIN_AUDITORS . '|max:' . $maxAuditors,
+            'mandays' => 'required|integer|min:1',
+            // Validasi Array Auditor
+            'auditor_ids' => 'required|array|size:' . $request->jumlah_audit,
+            'auditor_ids.*' => 'required|exists:auditors,id', // Pastikan ID valid & tidak kosong
+        ], [
+            // Custom Error Message agar kamu tahu letak salahnya
+            'auditor_ids.size' => 'Jumlah auditor yang dipilih harus sama dengan angka Jumlah Audit.',
+            'auditor_ids.*.required' => 'Silakan pilih nama auditor pada semua kolom yang tersedia.',
+            'jumlah_audit.max' => 'Jumlah audit melebihi total auditor aktif (' . $maxAuditors . ' orang).',
         ]);
 
-        $pelakuUsaha->update($request->all());
+        // 3. Update Data Utama
+        $pelakuUsaha->update($request->except(['auditor_ids']));
 
-        // --- PERBAIKAN DI SINI ---
-        // Arahkan kembali ke halaman INDEX (daftar) karena 'show' tidak ada
-        return redirect()->route('pelaku-usaha.index') 
-                         ->with('success', 'Data Pelaku Usaha berhasil diperbarui.');
+        // 4. Update Relasi Auditor (Sync)
+        // filter array_filter berguna membuang nilai null/kosong jika ada
+        if ($request->has('auditor_ids')) {
+            $ids = array_values(array_filter($request->auditor_ids, fn($value) => !is_null($value) && $value !== ''));
+            $syncData = [];
+            foreach ($ids as $index => $auditorId) {
+                $syncData[$auditorId] = ['sort_order' => $index];
+            }
+            $pelakuUsaha->auditors()->sync($syncData);
+        } else {
+            $pelakuUsaha->auditors()->detach();
+        }
+
+        // 5. Redirect ke Index (Pasti Jalan jika tidak ada error validasi)
+        return redirect()->route('pelaku-usaha.index')
+                         ->with('success', 'Data pelaku usaha berhasil diperbarui.');
     }
 
     /**
@@ -143,7 +238,7 @@ class PelakuUsahaController extends Controller
     {
         $pelakuUsaha->delete();
         return redirect()->route('pelaku-usaha.index')
-                         ->with('success', 'Data Pelaku Usaha berhasil dihapus.');
+            ->with('success', 'Data Pelaku Usaha berhasil dihapus.');
     }
 
     // --- METHOD BARU UNTUK AJAX DROPDOWN ---
@@ -156,7 +251,7 @@ class PelakuUsahaController extends Controller
         $request->validate([
             'province_id' => [
                 'required',
-                Rule::exists((new Province())->getTable(), 'id') 
+                Rule::exists((new Province())->getTable(), 'id')
             ]
         ]);
 
@@ -176,9 +271,9 @@ class PelakuUsahaController extends Controller
 
         // 6. Cari kota berdasarkan 'province_code'
         $cities = City::where('province_code', $provinceCode)
-                      ->select('code', 'name')
-                      ->get();
-        
+            ->select('code', 'name')
+            ->get();
+
         // 7. Kembalikan sebagai JSON
         return response()->json($cities);
     }

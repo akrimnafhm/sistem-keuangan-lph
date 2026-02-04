@@ -9,21 +9,13 @@ class KonfigurasiBiaya extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'konfigurasi_biayas';
+
     protected $fillable = [
-        'pajak',
-        'fee_uin_mikro',
-        'fee_uin_menengah',
-        'fee_uin_besar',
-        'fee_lph_mikro',
-        'fee_lph_menengah',
-        'fee_lph_besar',
-        'unit_cost_audit_mikro',
-        'unit_cost_audit_menengah',
-        'unit_cost_audit_besar',
+        'komponen',
+        'mikro',
+        'kecil',
+        'menengah',
+        'besar',
     ];
 }

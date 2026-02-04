@@ -51,14 +51,6 @@ class UserController extends Controller
     }
 
     /**
-     * Menampilkan detail spesifik dari satu User.
-     */
-    public function show(User $user)
-    {
-        return view('users.show', compact('user'));
-    }
-
-    /**
      * Menampilkan form untuk mengedit data user.
      */
     public function edit(User $user)

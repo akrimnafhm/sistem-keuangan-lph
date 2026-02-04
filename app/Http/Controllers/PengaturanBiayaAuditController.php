@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Laravolt\Indonesia\Models\Province; // <-- GANTI DARI WILAYAH KE PROVINCE
+use Laravolt\Indonesia\Models\Province;
 use Illuminate\Http\Request;
 
 class PengaturanBiayaAuditController extends Controller
@@ -10,12 +10,20 @@ class PengaturanBiayaAuditController extends Controller
     /**
      * Menampilkan daftar semua pengaturan biaya provinsi.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ganti 'Wilayah' menjadi 'Province' dan 'nama_provinsi' menjadi 'name'
-        $provinces = Province::orderBy('name', 'asc')->get();
-        
-        // Ganti 'wilayahs' menjadi 'provinces'
+        $search = $request->input('search');
+
+        // Mengambil data provinsi dengan pencarian dan pagination
+        $provinces = Province::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
+            ->orderBy('name', 'asc') // Urutkan nama A-Z
+            ->paginate(8);
+
+        $provinces->appends(['search' => $search]);
+
         return view('pengaturan-biaya-audit.index', compact('provinces'));
     }
 
@@ -52,6 +60,6 @@ class PengaturanBiayaAuditController extends Controller
 
         // Ganti '$wilayah->nama_provinsi' menjadi '$province->name'
         return redirect()->route('pengaturan-biaya-audit.index')
-                         ->with('success', 'Biaya untuk ' . $province->name . ' berhasil diperbarui.');
+            ->with('success', 'Biaya untuk ' . $province->name . ' berhasil diperbarui.');
     }
 }
